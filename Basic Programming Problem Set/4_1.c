@@ -1,3 +1,4 @@
+```c
 #include <stdio.h>
 
 void PrintN ( int N );
@@ -19,3 +20,4 @@ void PrintN (int N){
 		printf("%d\n", i);
 	}
 }
+```

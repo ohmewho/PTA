@@ -36,6 +36,7 @@ void CountOff( int n, int m, int out[] ){
 			iterb++;
 			iterc++;		
 		}
+		/*报数为二的人，其下一位可能已经被count off了。 The one next to the one who counts 2 could be already counted off.*/
 		while(temp[iterc % n]) {
 			printf("iterc = %d, %d is skipped.\n", iterc, iterc % n + 1);
 			iterc++;	

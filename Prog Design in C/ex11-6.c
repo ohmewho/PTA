@@ -30,7 +30,7 @@ char *search(char *s, char *t){
 	for(iter = 0; iter < slen; iter++){
 		if(s[iter] == t[0]){
 //			printf("iter = %d, tlen = %d, slen = %d\n", iter, tlen, slen);
-			if(iter + tlen <= slen){
+			if(iter + tlen <= slen){/*Why should it be inclusive?*/
 				for(iiter = iter; t[iiter - iter]; iiter++){
 					if(s[iiter] != t[iiter - iter]) {
 						found = 0;
@@ -49,10 +49,10 @@ char *search(char *s, char *t){
 	return pos;
 }
 	
-void ReadString( char s[] ){
+void ReadString( char s[] ){/*Details are here*/
 	char temp[MAXS];
 	gets(temp);
-	int iter = 0, titer = 0;
+	int iter = 0;
 	while(iter < MAXS && temp[iter]){
 		s[iter] = temp[iter];
 		iter++;

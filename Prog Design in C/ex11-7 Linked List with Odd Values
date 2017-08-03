@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct ListNode {
+    int data;
+    struct ListNode *next;
+};
+
+struct ListNode *readlist();
+struct ListNode *getodd( struct ListNode **L );
+void printlist( struct ListNode *L )
+{
+     struct ListNode *p = L;
+     int count = 0;
+     while (p && count < 20) {
+           printf("%d ", p->data);
+           p = p->next;
+           count++;
+     }
+     printf("\n");
+}
+
+int main()
+{
+    struct ListNode *L, *Odd;
+    L = readlist();
+    Odd = getodd(&L);
+    printlist(Odd);
+    printlist(L);
+
+    return 0;
+}
+
+/* 你的代码将被嵌在这里 */
+struct ListNode *readlist(){
+	struct ListNode *phead, *pnode, *qnode;
+	int num, count = 0;
+	phead = (struct ListNode *)malloc(sizeof(struct ListNode));
+	scanf("%d", &num);
+	phead->data = num;
+	phead->next = NULL;
+	scanf("%d", &num);
+	pnode = phead;
+	while(num!=-1&& count < 15){
+		qnode = (struct ListNode *)malloc(sizeof(struct ListNode));
+		qnode->data = num;
+		qnode->next = NULL;
+		pnode->next = qnode;
+		pnode = qnode;
+		scanf("%d", &num);	
+		count++;	
+	}
+	return phead;
+}
+
+struct ListNode *getodd( struct ListNode **L ){
+	struct ListNode *podd, *poddnode, *qoddnode, *pnode, *plnode;
+	int first = 1;
+
+	podd = NULL;
+	pnode = *L;
+	while(pnode){
+		
+		if(pnode->data%2){
+			if(first) *L = pnode->next;
+			else if(!pnode->next) plnode->next = NULL;
+			poddnode = (struct ListNode *)malloc(sizeof(struct ListNode));
+			poddnode->data = pnode->data;
+			poddnode->next = NULL;
+			if(!podd) {
+				podd = poddnode;
+				qoddnode = podd;
+			}
+			else {
+				qoddnode->next = poddnode;
+				qoddnode = poddnode;    
+			} 
+		}
+		else {
+			if(first) {
+				*L = pnode;
+				first = 0;
+				plnode = *L;
+			}
+			else{
+				plnode->next = pnode;
+				plnode = pnode;
+			} 
+		}
+		pnode = pnode->next;
+	}
+	 
+	return podd;
+}

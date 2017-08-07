@@ -45,3 +45,20 @@ void leftShift(int *intArr, int n, int shift){
 	}
 	
 }
+
+void rightShift(int *intArr, int n, int shift){
+	int m = shift % n;
+	if(m){
+		int temp[m], iter;
+		for(iter = 0; iter < m; iter++){
+			temp[iter] = intArr[iter + n - m];
+		}
+		for(iter = n - 1; iter >= m ; iter--){
+			intArr[iter] = intArr[iter - m];
+		}
+		for(iter = 0; iter < m; iter++){
+			intArr[iter] = temp[iter];
+		}
+	}
+	
+}

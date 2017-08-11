@@ -16,8 +16,8 @@ int main(){
 			case '*': result *= num;
 			break;
 			case '/': if(num == 0) error = 1;
-					  else result /= num;
-					  break;
+			else result /= num;
+			break;
 			default: error = 1;
 			break;
 		}

@@ -101,7 +101,7 @@ struct ListNode *deletem( struct ListNode *L, int m ){
 		//		printf("data of pfirst is %d\n", pfirst->data);
 				
 			}
-		//	ptail = ptail->next;
+		
 			
 		}
 		if(pfirst->data == m){

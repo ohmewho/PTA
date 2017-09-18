@@ -1,0 +1,157 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef int ElementType;
+typedef  struct aNode * PtrtoNode;
+typedef struct aNode {
+	ElementType coe;
+	ElementType expon;
+	PtrtoNode next;
+}Node;
+
+typedef PtrtoNode Polynomial;
+
+Polynomial createPoly(){
+	int n, iter;
+	ElementType coe, expon;
+	
+	scanf("%d", &n);
+	
+	Polynomial p = (PtrtoNode)malloc(sizeof(Node));
+	p->next = NULL;
+	
+	PtrtoNode tempNode, rearNode = p;
+	
+	for(iter = 0; iter < n; iter++){
+		tempNode = (PtrtoNode)malloc(sizeof(Node));
+		scanf("%d %d", &coe, &expon);
+		tempNode->coe = coe;
+		tempNode->expon = expon;
+		tempNode->next = NULL;
+		
+		rearNode->next = tempNode;
+		rearNode = tempNode;		
+	}
+	
+	return p;
+}
+
+void printPoly(Polynomial p){
+	int first = 1;
+	Polynomial temp = p->next;
+	if(!temp) printf("%d %d", 0, 0);
+	else{
+		while(temp){
+			if(first) first = 0;
+			else printf(" ");
+			printf("%d %d", temp->coe, temp->expon);
+			temp = temp->next;
+		}
+	}
+	
+	printf("\n");
+}
+
+int Compare(ElementType e1, ElementType e2){
+	if(e1 > e2) return 1;
+	else if(e1 < e2) return -1;
+	return 0;
+}
+
+void insertAnItem(ElementType coe, ElementType expon, Polynomial * PtrtoRear){
+	Polynomial P;
+	
+	P = (Polynomial)malloc(sizeof(struct aNode));
+	P->coe = coe;
+	P->expon = expon;
+	P->next = NULL;
+	(*PtrtoRear)->next = P;
+	*PtrtoRear = P; 
+}
+
+Polynomial PolyAdd(Polynomial P1, Polynomial P2){
+	Polynomial front, rear, temp1 = P1->next, temp2 = P2->next;
+	ElementType sum;
+	rear = (Polynomial)malloc(sizeof(struct aNode));
+	front = rear;
+	while(temp1 && temp2){
+		switch(Compare(temp1->expon, temp2->expon)){
+			case 1:
+				insertAnItem(temp1->coe, temp1->expon, &rear);
+				temp1 = temp1->next;
+				break;
+			case 0:
+				sum = temp1->coe + temp2->coe;
+				if(sum) insertAnItem(sum, temp1->expon, &rear);
+				temp1 = temp1->next;
+				temp2 = temp2->next;
+				break;
+			case -1:
+				insertAnItem(temp2->coe, temp2->expon, &rear);
+				temp2 = temp2->next;
+				break;
+		}
+	}
+	while(temp1){
+		insertAnItem(temp1->coe, temp1->expon, &rear);
+		temp1 = temp1->next;
+	}
+	while(temp2){
+		insertAnItem(temp2->coe, temp2->expon, &rear);
+		temp2 = temp2->next;
+	}
+	rear->next = NULL;
+	return front;
+}
+
+Polynomial PolyMultbyAnItem(Polynomial P1, Node item){
+	Polynomial front, rear, temp1 = P1->next;
+	ElementType coe, expon;
+	rear = (Polynomial)malloc(sizeof(struct aNode));
+	rear->next = NULL;
+	front = rear;
+	
+	while(temp1){
+		coe = temp1->coe * item.coe;
+		expon = temp1->expon + item.expon;
+		if(coe) insertAnItem(coe, expon, &rear);
+		temp1 = temp1->next;
+	}
+
+	rear->next = NULL;
+	return front;
+}
+
+Polynomial PolyMultiply(Polynomial P1, Polynomial P2){
+	PtrtoNode temp = P2->next;
+	Polynomial Product, rear, P;
+	Node item;
+	
+	Product = (Polynomial)malloc(sizeof(Node));
+	Product->next = NULL;
+	rear = Product;
+	
+	while(temp){
+		item = *temp;
+		P = PolyMultbyAnItem(P1, item);
+		Product = PolyAdd(Product, P);
+		temp = temp->next;
+	}
+		
+	return Product;		
+}
+
+int main()
+{
+    Polynomial P1, P2, Product, Sum;
+	P1 = createPoly();
+	P2 = createPoly();
+	
+	Product = PolyMultiply(P1, P2);
+	printPoly(Product);
+	
+	Sum = PolyAdd(P1, P2);
+	printPoly(Sum);	
+				
+    return 0;
+}
